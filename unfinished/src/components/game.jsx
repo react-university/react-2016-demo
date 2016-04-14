@@ -13,6 +13,7 @@ export default class Game extends React.Component {
     this.getShip           = this.getShip.bind(this);
     this.updateShip        = this.updateShip.bind(this);
     this.updateShipInfoKey = this.updateShipInfoKey.bind(this);
+    this.updateDestination = this.updateDestination.bind(this);
   }
 
   getShip() {
@@ -31,9 +32,17 @@ export default class Game extends React.Component {
     this.updateShip('info', info);
   }
 
+  updateDestination(newDestination) {
+    this.updateShip('destination', newDestination);
+  }
+
   render() {
     return <div>
-      <StarChart starData={starData} ship={this.state.ship}/>
+      <StarChart
+        starData={starData}
+        ship={this.state.ship}
+        updateDestination={this.updateDestination}
+      />
       <HelmControl ship={this.state.ship} updateShipInfoKey={this.updateShipInfoKey} />
     </div>
   }
