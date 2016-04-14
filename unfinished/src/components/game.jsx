@@ -1,19 +1,27 @@
 import React           from 'react';
 import StarChart       from './star-chart';
 import HelmControl     from './helm-control';
+import IntervalWrapper from './interval-wrapper';
 import {
   starData,
-  initialShipData
+  initialShipData,
+  destinationReached,
+  nextPositionToDestination
 } from 'lib';
 
-export default class Game extends React.Component {
+class Game extends React.Component {
+
   constructor(props) {
     super(props);
-    this.state = {ship: initialShipData};
-    this.getShip           = this.getShip.bind(this);
-    this.updateShip        = this.updateShip.bind(this);
-    this.updateShipInfoKey = this.updateShipInfoKey.bind(this);
-    this.updateDestination = this.updateDestination.bind(this);
+    this.state               = {ship: initialShipData};
+    this.getShip             = this.getShip.bind(this);
+    this.updateShip          = this.updateShip.bind(this);
+    this.updateShipInfoKey   = this.updateShipInfoKey.bind(this);
+    this.updateDestination   = this.updateDestination.bind(this);
+    this.updateSpeed         = this.updateSpeed.bind(this);
+    this.engageWarpDrive     = this.engageWarpDrive.bind(this);
+    this.isShipAtDestination = this.isShipAtDestination.bind(this);
+    this.updateShipPosition  = this.updateShipPosition.bind(this);
   }
 
   getShip() {
@@ -36,6 +44,31 @@ export default class Game extends React.Component {
     this.updateShip('destination', newDestination);
   }
 
+  updateSpeed(newSpeed) {
+    this.updateShip('speed', newSpeed);
+  }
+
+  engageWarpDrive() {
+    this.props.clearIntervals();
+    this.props.setInterval(this.updateShipPosition, 10);
+  }
+
+  updateShipPosition() {
+    this.isShipAtDestination() ? this.haltShip() : this.moveShipToNextPosition();
+  }
+
+  isShipAtDestination() {
+    return destinationReached(this.getShip());
+  }
+
+  haltShip() {
+    this.props.clearIntervals();
+  }
+
+  moveShipToNextPosition() {
+    this.updateShip('position', nextPositionToDestination(this.getShip()));
+  }
+
   render() {
     return <div>
       <StarChart
@@ -43,7 +76,16 @@ export default class Game extends React.Component {
         ship={this.state.ship}
         updateDestination={this.updateDestination}
       />
-      <HelmControl ship={this.state.ship} updateShipInfoKey={this.updateShipInfoKey} />
+      <HelmControl
+        starData={starData}
+        ship={this.state.ship}
+        updateDestination={this.updateDestination}
+        updateShipInfoKey={this.updateShipInfoKey}
+        updateSpeed={this.updateSpeed}
+        engageWarpDrive={this.engageWarpDrive}
+      />
     </div>
   }
 }
+
+export default IntervalWrapper(Game);
