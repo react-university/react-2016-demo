@@ -1,8 +1,11 @@
-import React from 'react';
+import React           from 'react';
+import StarChart       from './star-chart';
+import {
+  starData
+} from 'lib';
 
 export default class Game extends React.Component {
   render() {
-    return <h1>Hello, World!</h1>
+    return <StarChart starData={starData} />
   }
 }
-
