@@ -35,7 +35,7 @@ class Game extends React.Component {
   }
 
   updateShipInfoKey(key, value) {
-    const info = this.getShip().info;
+    const info = Object.assign({}, this.getShip().info);
     info[key] = value;
     this.updateShip('info', info);
   }
@@ -73,12 +73,12 @@ class Game extends React.Component {
     return <div>
       <StarChart
         starData={starData}
-        ship={this.state.ship}
+        ship={this.getShip()}
         updateDestination={this.updateDestination}
       />
       <HelmControl
         starData={starData}
-        ship={this.state.ship}
+        ship={this.getShip()}
         updateDestination={this.updateDestination}
         updateShipInfoKey={this.updateShipInfoKey}
         updateSpeed={this.updateSpeed}

@@ -1,8 +1,13 @@
-import          'jquery-ui/autocomplete';
-import React    from 'react';
-import ReactDOM from 'react-dom';
+import                 'jquery-ui/autocomplete';
+import React           from 'react';
+import ReactDOM        from 'react-dom';
+import shallowCompare  from 'react-addons-shallow-compare';
 
 export default class CourseControl extends React.Component {
+
+  shouldComponentUpdate() {
+    return false;
+  }
 
   componentDidMount() {
     this.autocomplete();

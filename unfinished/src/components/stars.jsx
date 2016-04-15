@@ -1,8 +1,16 @@
 import React from 'react';
 
-const Stars = (p) => {
-  return <g>{p.starData.map((star, index) => renderStars(star, index, p.handleClick))}</g> // pass updateDestination
+class Stars extends React.Component {
+  shouldComponentUpdate() {
+    return false;
+  }
+
+  render() {
+    const p = this.props;
+    return <g>{p.starData.map((star, index) => renderStars(star, index, p.handleClick))}</g> // pass updateDestination
+  }
 }
+
 
 const renderStars = (star, index, handleClick) => { //Update the arguments
   const circleAttr = {
