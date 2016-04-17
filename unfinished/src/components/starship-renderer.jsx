@@ -7,7 +7,7 @@ const StarshipRenderer = (p) => {
 };
 
 const renderImage = (ship) => {
-  const imageInText = renderShipImageAsString(ship);
+  const imageInText = renderShipImageAsString(ship.toJS());
   return {__html: imageInText};
 };
 

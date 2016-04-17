@@ -13,20 +13,22 @@ class Stars extends React.Component {
 
 
 const renderStars = (star, index, handleClick) => { //Update the arguments
+  const posX = star.getIn(['position', 0]);
+  const posY = star.getIn(['position', 1]);
   const circleAttr = {
-    cx: star.position[0],
-    cy: star.position[1],
+    cx: posX,
+    cy: posY,
     r: 2,
     className: 'star-circle'
   };
   const textAttr = {
-    x: star.position[0] + 5,
-    y: star.position[1] + 5,
-    className: `star-name ${star.jurisdiction}`,
+    x: posX + 5,
+    y: posY + 5,
+    className: `star-name ${star.get('jurisdiction')}`,
     onClick: handleClick.bind(null, star)// add the click handler to text props
   };
   return <g key={index}>
-    <text {...textAttr}>{star.name}</text>
+    <text {...textAttr}>{star.get('name')}</text>
     <circle {...circleAttr}/>
   </g>
 }

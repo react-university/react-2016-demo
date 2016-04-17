@@ -17,15 +17,17 @@ class ShipInfo extends React.Component {
 }
 
 const renderElements = (p) => {
-  const keys = Object.keys(p.info);
-  return keys.map((infoKey, index) => renderElement(infoKey, index, p));
+  return p.info.reduce((arr, v, k) => {
+    arr.push(renderElement(v, k, p.updateShipInfoKey))
+    return arr;
+  }, []);
 };
 
-const renderElement = (infoKey, index, p) => {
+const renderElement = (value, key, updateShipInfoKey) => {
   const elementProps = {
-    key: index,
-    value: p.info[infoKey] || infoKey,
-    onEdit: p.updateShipInfoKey.bind(this, infoKey)
+    key: key,
+    value: value || key,
+    onEdit: updateShipInfoKey.bind(this, key)
   };
   return <EditableElement {...elementProps} />
 };

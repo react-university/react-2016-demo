@@ -17,11 +17,11 @@ class HelmControl extends React.Component {
       <div id="helm-header">
         <h1>Helm Control</h1>
       </div>
-      <ShipInfo info={p.ship.info} updateShipInfoKey={p.updateShipInfoKey}/>
+      <ShipInfo info={p.ship.get('info')} updateShipInfoKey={p.updateShipInfoKey}/>
       <NavigationDashboard ship={p.ship}/>
       <CourseControl {...p} />
       <WarpDriveControls
-        speed={p.ship.speed}
+        speed={p.ship.get('speed')}
         updateSpeed={p.updateSpeed}
         engageWarpDrive={p.engageWarpDrive}
       />
