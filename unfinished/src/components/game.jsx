@@ -1,4 +1,5 @@
 import React           from 'react';
+import {fromJS}        from 'immutable';
 import StarChart       from './star-chart';
 import HelmControl     from './helm-control';
 import IntervalWrapper from './interval-wrapper';
@@ -25,19 +26,16 @@ class Game extends React.Component {
   }
 
   getShip() {
-    return Object.assign({}, this.state.ship);
+    return this.state.ship;
   }
 
   updateShip(key, value) {
-    const ship = this.getShip();
-    ship[key] = value;
-    this.setState({ship: ship});
+    this.setState({ship: this.getShip().set(key, value)});
   }
 
   updateShipInfoKey(key, value) {
-    const info = Object.assign({}, this.getShip().info);
-    info[key] = value;
-    this.updateShip('info', info);
+    const info = this.getShip().get('info');
+    this.updateShip('info', info.set(key, value));
   }
 
   updateDestination(newDestination) {
@@ -58,7 +56,7 @@ class Game extends React.Component {
   }
 
   isShipAtDestination() {
-    return destinationReached(this.getShip());
+    return destinationReached(this.getShip().toJS());
   }
 
   haltShip() {
@@ -66,7 +64,9 @@ class Game extends React.Component {
   }
 
   moveShipToNextPosition() {
-    this.updateShip('position', nextPositionToDestination(this.getShip()));
+    const ship = this.getShip().toJS();
+    const nextPosition = fromJS(nextPositionToDestination(ship));
+    this.updateShip('position', nextPosition);
   }
 
   render() {

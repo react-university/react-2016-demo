@@ -19,7 +19,7 @@ export default class CourseControl extends React.Component {
 
   autocomplete() {
     const starData = this.props.starData;
-    const starNames = starData.map((star) => star.name);
+    const starNames = starData.map((star) => star.get('name')).toJS();
     $(this.refs.search).autocomplete({
       source: starNames,
       minLength: 3,
@@ -36,7 +36,7 @@ export default class CourseControl extends React.Component {
   }
 
   findSystem(starData, starName) {
-    return starData.filter((star) => star.name === starName )[0];
+    return starData.filter((star) => star.get('name') === starName ).get(0)
   }
 
   render() {
