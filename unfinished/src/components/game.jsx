@@ -1,11 +1,12 @@
-import React           from 'react';
-import {fromJS}        from 'immutable';
-import StarChart       from './star-chart';
-import HelmControl     from './helm-control';
-import IntervalWrapper from './interval-wrapper';
+import React                from 'react';
+import {connect}            from 'react-redux';
+import {fromJS}             from 'immutable';
+import * as actionCreators  from '../action-creators';
+import StarChart            from './star-chart';
+import HelmControl          from './helm-control';
+import IntervalWrapper      from './interval-wrapper';
 import {
   starData,
-  initialShipData,
   destinationReached,
   nextPositionToDestination
 } from 'lib';
@@ -14,9 +15,6 @@ class Game extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state               = {ship: initialShipData};
-    this.getShip             = this.getShip.bind(this);
-    this.updateShip          = this.updateShip.bind(this);
     this.updateShipInfoKey   = this.updateShipInfoKey.bind(this);
     this.updateDestination   = this.updateDestination.bind(this);
     this.updateSpeed         = this.updateSpeed.bind(this);
@@ -26,24 +24,21 @@ class Game extends React.Component {
   }
 
   getShip() {
-    return this.state.ship;
+    return this.props.ship;
   }
 
-  updateShip(key, value) {
-    this.setState({ship: this.getShip().set(key, value)});
-  }
 
   updateShipInfoKey(key, value) {
     const info = this.getShip().get('info');
-    this.updateShip('info', info.set(key, value));
+    this.props.updateShip('info', info.set(key, value));
   }
 
   updateDestination(newDestination) {
-    this.updateShip('destination', newDestination);
+    this.props.updateShip('destination', newDestination);
   }
 
   updateSpeed(newSpeed) {
-    this.updateShip('speed', newSpeed);
+    this.props.updateShip('speed', newSpeed);
   }
 
   engageWarpDrive() {
@@ -66,7 +61,7 @@ class Game extends React.Component {
   moveShipToNextPosition() {
     const ship = this.getShip().toJS();
     const nextPosition = fromJS(nextPositionToDestination(ship));
-    this.updateShip('position', nextPosition);
+    this.props.updateShip('position', nextPosition);
   }
 
   render() {
@@ -88,4 +83,10 @@ class Game extends React.Component {
   }
 }
 
-export default IntervalWrapper(Game);
+const mapStateToProps = (state) => {
+  return {
+    ship: state
+  }
+};
+
+export default connect(mapStateToProps, actionCreators)(IntervalWrapper(Game));
