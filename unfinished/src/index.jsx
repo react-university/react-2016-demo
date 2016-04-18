@@ -3,7 +3,7 @@ import React      from 'react';
 import ReactDOM   from 'react-dom';
 import {Provider} from 'react-redux';
 import store      from './store';
-import Game       from './components/game';
+import routes     from './routes';
 import Perf       from 'react-addons-perf';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -12,7 +12,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const app = <Provider store={store}>
-  <Game />
+  {routes}
 </Provider>
 
 ReactDOM.render(app, document.getElementById('app'));
