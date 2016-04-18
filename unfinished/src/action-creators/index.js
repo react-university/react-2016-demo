@@ -35,3 +35,20 @@ export function updatePosition(newPosition) {
     }
   }
 }
+
+export function engageWarpDrive() {
+  return (dispatch, getState) => {
+    const {timerId} = getState();
+    if (!timerId) {
+      const timerId = setInterval(() => {
+        dispatch({type: 'MOVE_SHIP'});
+      }, 10)
+      dispatch({
+        type: 'TIMER_STARTED',
+        payload: {
+          timerId
+        }
+      });
+    }
+  }
+}
