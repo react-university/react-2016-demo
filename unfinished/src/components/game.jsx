@@ -15,30 +15,9 @@ class Game extends React.Component {
 
   constructor(props) {
     super(props);
-    this.updateShipInfoKey   = this.updateShipInfoKey.bind(this);
-    this.updateDestination   = this.updateDestination.bind(this);
-    this.updateSpeed         = this.updateSpeed.bind(this);
     this.engageWarpDrive     = this.engageWarpDrive.bind(this);
     this.isShipAtDestination = this.isShipAtDestination.bind(this);
     this.updateShipPosition  = this.updateShipPosition.bind(this);
-  }
-
-  getShip() {
-    return this.props.ship;
-  }
-
-
-  updateShipInfoKey(key, value) {
-    const info = this.getShip().get('info');
-    this.props.updateShip('info', info.set(key, value));
-  }
-
-  updateDestination(newDestination) {
-    this.props.updateShip('destination', newDestination);
-  }
-
-  updateSpeed(newSpeed) {
-    this.props.updateShip('speed', newSpeed);
   }
 
   engageWarpDrive() {
@@ -51,7 +30,7 @@ class Game extends React.Component {
   }
 
   isShipAtDestination() {
-    return destinationReached(this.getShip().toJS());
+    return destinationReached(this.props.ship.toJS());
   }
 
   haltShip() {
@@ -59,24 +38,24 @@ class Game extends React.Component {
   }
 
   moveShipToNextPosition() {
-    const ship = this.getShip().toJS();
+    const ship = this.props.ship.toJS();
     const nextPosition = fromJS(nextPositionToDestination(ship));
-    this.props.updateShip('position', nextPosition);
+    this.props.updatePosition(nextPosition);
   }
 
   render() {
     return <div>
       <StarChart
         starData={starData}
-        ship={this.getShip()}
-        updateDestination={this.updateDestination}
+        ship={this.props.ship}
+        updateDestination={this.props.updateDestination}
       />
       <HelmControl
         starData={starData}
-        ship={this.getShip()}
-        updateDestination={this.updateDestination}
-        updateShipInfoKey={this.updateShipInfoKey}
-        updateSpeed={this.updateSpeed}
+        ship={this.props.ship}
+        updateDestination={this.props.updateDestination}
+        updateShipInfoKey={this.props.updateShipInfoKey}
+        updateSpeed={this.props.updateSpeed}
         engageWarpDrive={this.engageWarpDrive}
       />
     </div>
