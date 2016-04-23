@@ -79,4 +79,15 @@ if (process.env.NODE_ENV === "production") {
   productionPlugins.forEach((plugin) => config.plugins.push(plugin));
 }
 
+if (process.env.LINT) {
+  config.module.preLoaders = [
+    {
+      test: /\.jsx$/,
+      loader: 'eslint',
+      include: [__dirname],
+      exclude: [path.join(__dirname, './', 'node_modules'), path.join(__dirname, './', 'lib')]
+    }
+  ];
+}
+
 module.exports = config;
